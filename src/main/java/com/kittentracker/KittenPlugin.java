@@ -585,7 +585,7 @@ public class KittenPlugin extends Plugin {
         secondsInTick here, compared to not doing that in advanceGrowthTick()
          */
         growthTicksAlive -= numTicksToRemove;
-        System.out.println("Subtracting growth tick!! (numTicksToRemove: " + numTicksToRemove + ")");
+        log.debug("Subtracting kitten growth tick!! (numTicksToRemove: " + numTicksToRemove + ")");
         followerKind = FollowerKind.getFromFollowerId(followerID);
         if (followerKind.equals(FollowerKind.KITTEN)) {
             addKittenGrowthBox((TICKS_TO_ADULTHOOD - growthTicksAlive) * GROWTH_TICK_IN_SECONDS - secondsInTick);
