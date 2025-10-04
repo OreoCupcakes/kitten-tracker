@@ -71,7 +71,7 @@ public class KittenPlugin extends Plugin {
     private static final int VAR_PLAYER_FOLLOWER = 447;
     private static final int WIDGET_ID_DIALOG_NOTIFICATION_GROUP_ID = 229;
     private static final int WIDGET_ID_DIALOG_PLAYER_TEXT = 6;
-    private static final int WIDGET_ID_DIALOG_NOTIFICATION_TEXT = 1;
+    private static final int WIDGET_ID_DIALOG_NOTIFICATION_TEXT = 3;
 
     private static final String DIALOG_CAT_STROKE = "That cat sure loves to be stroked.";
     private static final String DIALOG_CAT_BALL_OF_WOOL = "That kitten loves to play with that ball of wool. I think itis its favourite."; // The typo is intentional and how the game reads it...
