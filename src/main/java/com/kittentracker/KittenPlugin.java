@@ -26,13 +26,29 @@
 package com.kittentracker;
 
 import com.google.inject.Provides;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
-import net.runelite.api.*;
-import net.runelite.api.events.*;
+import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.HashTable;
+import net.runelite.api.WidgetNode;
+import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.OverheadTextChanged;
+import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -47,15 +63,6 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.inject.Inject;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.*;
-import java.util.Iterator;
-import java.util.Enumeration;
-
 
 @Slf4j
 @PluginDescriptor(
@@ -63,9 +70,7 @@ import java.util.Enumeration;
 )
 public class KittenPlugin extends Plugin {
     private static final int VAR_PLAYER_FOLLOWER = 447;
-    private static final int WIDGET_ID_DIALOG_NOTIFICATION_GROUP_ID = 229;
     private static final int WIDGET_ID_DIALOG_PLAYER_TEXT = 6;
-    private static final int WIDGET_ID_DIALOG_NOTIFICATION_TEXT = 1;
 
     private static final String DIALOG_CAT_STROKE = "That cat sure loves to be stroked.";
     private static final String DIALOG_CAT_BALL_OF_WOOL = "That kitten loves to play with that ball of wool. I think itis its favourite."; // The typo is intentional and how the game reads it...
@@ -579,7 +584,7 @@ public class KittenPlugin extends Plugin {
         secondsInTick here, compared to not doing that in advanceGrowthTick()
          */
         growthTicksAlive -= numTicksToRemove;
-        System.out.println("Subtracting growth tick!! (numTicksToRemove: " + numTicksToRemove + ")");
+        log.debug("Subtracting kitten growth tick!! (numTicksToRemove: " + numTicksToRemove + ")");
         followerKind = FollowerKind.getFromFollowerId(followerID);
         if (followerKind.equals(FollowerKind.KITTEN)) {
             addKittenGrowthBox((TICKS_TO_ADULTHOOD - growthTicksAlive) * GROWTH_TICK_IN_SECONDS - secondsInTick);
@@ -773,7 +778,7 @@ public class KittenPlugin extends Plugin {
                 lastAttentionType = KittenAttentionType.BALL_OF_WOOL;
             }
         }
-        Widget notificationDialog = client.getWidget(WIDGET_ID_DIALOG_NOTIFICATION_GROUP_ID, WIDGET_ID_DIALOG_NOTIFICATION_TEXT);
+        Widget notificationDialog = client.getWidget(InterfaceID.Messagebox.TEXT);
         if (notificationDialog != null) {
             String notificationText = Text.removeTags(notificationDialog.getText()); // remove color and linebreaks
             if (notificationText.equals(DIALOG_GERTRUDE_GIVES_YOU_ANOTHER_KITTEN)) { // new kitten
