@@ -162,11 +162,6 @@ public class KittenPlugin extends Plugin {
     // the first growth tick can be very early upon login - probably something to do with loading the game or plugin.
     private boolean noGrowthSinceLoggedIn = true;
 
-    private static final int GRAND_EXCHANGE_ITEM_SETS_GROUP_ID = 451;
-    private static final int GRAND_EXCHANGE_ITEM_SETS_2_GROUP_ID = 430;
-    private static final int GRAND_EXCHANGE_HISTORY_GROUP_ID = 383;
-    private static final int XP_LAMP_GROUP_ID = 240;  // same for book of knowledge from dunce random event
-
 	/* InterfaceIDs for interfaces that stall kitten growth.  This is not all-inclusive.  It's just a makeshift
 	replacement for watching for overhead text that would normally indicate kitten growth when the player count
 	is very high and cant load all entities and your kitten might not be rendered.
@@ -191,7 +186,9 @@ public class KittenPlugin extends Plugin {
             InterfaceID.ITEMSETS, InterfaceID.ITEMSETS_SIDE, InterfaceID.GE_HISTORY,
 			InterfaceID.SEED_VAULT, InterfaceID.QUESTSCROLL, InterfaceID.LEVELUP_DISPLAY,
 			InterfaceID.FAIRYRINGS, InterfaceID.SHOPMAIN, InterfaceID.SLAYER_REWARDS,
-			InterfaceID.CONFIRMDESTROY, InterfaceID.BANKPIN_KEYPAD, InterfaceID.XPREWARD, InterfaceID.BANKMAIN));
+			InterfaceID.CONFIRMDESTROY, InterfaceID.BANKPIN_KEYPAD, InterfaceID.BANKMAIN,
+			InterfaceID.XPREWARD // same for book of knowledge from dunce random event
+		));
 
     private Timer kittenAttentionTimer, growthTimer, kittenHungryTimer;
 
