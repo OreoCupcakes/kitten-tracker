@@ -48,7 +48,6 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -163,52 +162,36 @@ public class KittenPlugin extends Plugin {
     // the first growth tick can be very early upon login - probably something to do with loading the game or plugin.
     private boolean noGrowthSinceLoggedIn = true;
 
-    /* Widget Group IDs for interfaces that stall kitten growth.  This is not all-inclusive.  It's just a makeshift
-    replacement for watching for overhead text that would normally indicate kitten growth when the player count
-    is very high and cant load all entities and your kitten might not be rendered.  The ones listed individually here
-    are not included in WidgetID.java and I had to determine them manually.
-    Rule of thumb: if you can't move around and keep the interface open, it will delay kitten growth if it is open.
-     */
-    private static final int KOUREND_FAVOUR_TASK_LIST_GROUP_ID = 626;
-    private static final int EQUIPMENT_STATS_GROUP_ID = 84;
-    private static final int COMBAT_ACHIEVEMENTS_OVERVIEW_GROUP_ID = 717;
-    private static final int COMBAT_ACHIEVEMENTS_TASK_LIST_GROUP_ID = 715;
-    private static final int COMBAT_ACHIEVEMENTS_BOSSES_GROUP_ID = 716;
-
-    private static final int COMBAT_ACHIEVEMENTS_REWARDS_GROUP_ID = 714;
-
-    private static final int BOND_POUCH_GROUP_ID = 65;
-    private static final int NAME_CHANGER_GROUP_ID = 589;  // believe it or not this does pause kitten growth
-    private static final int POLL_GROUP_ID = 345;
-    private static final int POLL_HISTORY_GROUP_ID = 310;
-    private static final int STEEL_KEY_RING_GROUP_ID = 127;
-    private static final int MASTER_SCROLL_BOOK_GROUP_ID = 597;
-    private static final int FORESTRY_KIT_GROUP_ID = 823;
-    private static final int FORESTRY_KIT_GROUP_ID_2 = 822; // both 822 & 823 are open when the kit is open
-    private static final int BANK_COLLECTION_BOX_GROUP_ID = 402;
     private static final int GRAND_EXCHANGE_ITEM_SETS_GROUP_ID = 451;
     private static final int GRAND_EXCHANGE_ITEM_SETS_2_GROUP_ID = 430;
     private static final int GRAND_EXCHANGE_HISTORY_GROUP_ID = 383;
     private static final int XP_LAMP_GROUP_ID = 240;  // same for book of knowledge from dunce random event
 
-    List<Integer> unsafeIDs = new ArrayList<>(Arrays.asList(WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID,
-            WidgetID.GUIDE_PRICE_GROUP_ID, WidgetID.KEPT_ON_DEATH_GROUP_ID, WidgetID.COLLECTION_LOG_ID,
-            WidgetID.DIALOG_PLAYER_GROUP_ID, WidgetID.DIALOG_NPC_GROUP_ID, WidgetID.DIALOG_OPTION_GROUP_ID,
-            WidgetID.DIALOG_DOUBLE_SPRITE_GROUP_ID, WidgetID.DIALOG_SPRITE_GROUP_ID,
-            WidgetID.DIARY_QUEST_GROUP_ID, WidgetID.SEED_BOX_GROUP_ID, WidgetID.RUNE_POUCH_GROUP_ID,
-            WidgetID.CLUE_SCROLL_GROUP_ID, WidgetID.CLUE_SCROLL_REWARD_GROUP_ID,
-            WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD, WidgetID.BEGINNER_CLUE_MAP_DRAYNOR,
-            WidgetID.BEGINNER_CLUE_MAP_VARROCK_EAST_MINE, WidgetID.BEGINNER_CLUE_MAP_NORTH_OF_FALADOR,
-            WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER, KOUREND_FAVOUR_TASK_LIST_GROUP_ID, EQUIPMENT_STATS_GROUP_ID,
-            COMBAT_ACHIEVEMENTS_OVERVIEW_GROUP_ID, COMBAT_ACHIEVEMENTS_TASK_LIST_GROUP_ID,
-            COMBAT_ACHIEVEMENTS_BOSSES_GROUP_ID, COMBAT_ACHIEVEMENTS_REWARDS_GROUP_ID, BOND_POUCH_GROUP_ID,
-            NAME_CHANGER_GROUP_ID, POLL_GROUP_ID, POLL_HISTORY_GROUP_ID, STEEL_KEY_RING_GROUP_ID,
-            MASTER_SCROLL_BOOK_GROUP_ID, FORESTRY_KIT_GROUP_ID, FORESTRY_KIT_GROUP_ID_2,
-            WidgetID.GRAND_EXCHANGE_GROUP_ID, WidgetID.DEPOSIT_BOX_GROUP_ID, BANK_COLLECTION_BOX_GROUP_ID,
-            GRAND_EXCHANGE_ITEM_SETS_GROUP_ID, GRAND_EXCHANGE_ITEM_SETS_2_GROUP_ID, GRAND_EXCHANGE_HISTORY_GROUP_ID,
-            WidgetID.SEED_VAULT_GROUP_ID, WidgetID.QUEST_COMPLETED_GROUP_ID, WidgetID.LEVEL_UP_GROUP_ID,
-            WidgetID.FAIRY_RING_GROUP_ID, WidgetID.SHOP_GROUP_ID, WidgetID.SLAYER_REWARDS_GROUP_ID,
-            WidgetID.DESTROY_ITEM_GROUP_ID, WidgetID.BANK_PIN_GROUP_ID, XP_LAMP_GROUP_ID, WidgetID.BANK_GROUP_ID));
+	/* InterfaceIDs for interfaces that stall kitten growth.  This is not all-inclusive.  It's just a makeshift
+	replacement for watching for overhead text that would normally indicate kitten growth when the player count
+	is very high and cant load all entities and your kitten might not be rendered.
+	Rule of thumb: if you can't move around and keep the interface open, it will delay kitten growth if it is open.
+	 */
+    List<Integer> unsafeIDs = new ArrayList<>(Arrays.asList(InterfaceID.JOURNALSCROLL,
+			InterfaceID.GE_PRICECHECKER, InterfaceID.DEATHKEEP, InterfaceID.COLLECTION,
+			InterfaceID.CHAT_RIGHT, InterfaceID.CHAT_LEFT, InterfaceID.CHATMENU,
+			InterfaceID.OBJECTBOX_DOUBLE, InterfaceID.OBJECTBOX,
+			InterfaceID.QUESTJOURNAL, InterfaceID.HOSIDIUS_SEEDBOX, InterfaceID.RUNE_POUCH,
+			InterfaceID.TRAIL_CLUETEXT, InterfaceID.TRAIL_REWARDSCREEN,
+			InterfaceID.TRAIL_MAP01, InterfaceID.TRAIL_MAP02, InterfaceID.TRAIL_MAP03,
+			InterfaceID.TRAIL_MAP06, InterfaceID.TRAIL_MAP11,
+			InterfaceID.EQUIPMENT,
+            InterfaceID.CA_OVERVIEW, InterfaceID.CA_TASKS,
+            InterfaceID.CA_BOSSES, InterfaceID.CA_REWARDS, InterfaceID.CRM_SURPRISEPOPUP_SIDE,
+            InterfaceID.DISPLAYNAME, // believe it or not this does pause kitten growth
+			InterfaceID.POLL_RESULTS, InterfaceID.POLL_HISTORY, InterfaceID.FAVOUR_KEYRING,
+            InterfaceID.BOOKOFSCROLLS,
+			InterfaceID.FORESTRY_KIT_MAIN, InterfaceID.FORESTRY_KIT_SIDE, // forestry main and side simultaneously open
+			InterfaceID.GE_OFFERS, InterfaceID.BANK_DEPOSITBOX, InterfaceID.GE_COLLECT,
+            InterfaceID.ITEMSETS, InterfaceID.ITEMSETS_SIDE, InterfaceID.GE_HISTORY,
+			InterfaceID.SEED_VAULT, InterfaceID.QUESTSCROLL, InterfaceID.LEVELUP_DISPLAY,
+			InterfaceID.FAIRYRINGS, InterfaceID.SHOPMAIN, InterfaceID.SLAYER_REWARDS,
+			InterfaceID.CONFIRMDESTROY, InterfaceID.BANKPIN_KEYPAD, InterfaceID.XPREWARD, InterfaceID.BANKMAIN));
 
     private Timer kittenAttentionTimer, growthTimer, kittenHungryTimer;
 
@@ -764,7 +747,7 @@ public class KittenPlugin extends Plugin {
             hungryNotificationSend = true;
         }
 
-        Widget playerDialog = client.getWidget(WidgetID.DIALOG_PLAYER_GROUP_ID, WIDGET_ID_DIALOG_PLAYER_TEXT);
+        Widget playerDialog = client.getWidget(InterfaceID.ChatRight.TEXT);
 
         if (playerDialog != null) {
             String playerText = Text.removeTags(playerDialog.getText()); // remove color and linebreaks
@@ -917,7 +900,7 @@ public class KittenPlugin extends Plugin {
                 }
             }
         }
-        Widget dialog = client.getWidget(WidgetID.DIALOG_SPRITE_GROUP_ID, 2);
+        Widget dialog = client.getWidget(InterfaceID.OBJECTBOX, 2);
         if (dialog != null) {
             String notificationText = Text.removeTags(dialog.getText());
             if (notificationText.startsWith(DIALOG_HAND_OVER_CAT_CIVILIAN)) {
